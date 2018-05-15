@@ -12,11 +12,16 @@ Modified By: Dennis, Wangyi (denniswangyi@gmail.com>)
 Copyright 2018 - 2018 Dennis, Wangyi
 '''
 
+from django.contrib.auth import authenticate, login
+from django.urls import reverse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from rango.models import Category, Page
 from rango.forms import CategoryForm, PageForm, UserForm, UserProfileForm
 
+
 def index(request):
+    print(request.user)
     category_list = Category.objects.order_by('-likes')[:5]
     page_list = Page.objects.order_by('-views')[:5]
     context_dict = {'categories': category_list, 'pages': page_list}
@@ -133,4 +138,22 @@ def register(request):
             'profile_form': profile_form,
             'registed': registed
         }
-)
+    )
+
+
+def user_login(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        user = authenticate(username=username, password=password)
+
+        if user:
+            if user.is_active:
+                login(request, user)
+                return HttpResponseRedirect(reverse('rango:index'))
+            return HttpResponse('Your Rango account is disabled.')
+        print("Invalid login detail: {0}, {1}".format(username, password))
+        return HttpResponse('Invalid login details supplied. ')
+    else:
+        return render(request, 'rango/login.html', {})
