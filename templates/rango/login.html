@@ -9,6 +9,9 @@
     <h1>Login to Rango</h1>
     <form name='login_form' method="POST" action="{% url 'rango:login' %}">
         {% csrf_token %}
+        {% if error_msg %}
+        <h2>{{ error_msg }}</h2>
+        {% endif %}
         Username: <input type="text" name="username" value="" size="50" />
         <br />
         Password: <input type="password" name="password" value="" size="50" />
