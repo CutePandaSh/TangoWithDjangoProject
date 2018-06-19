@@ -3,10 +3,10 @@ from random import randint
 
 import django
 
-from rango.models import Category, Page
-
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'tango_with_django_project.settings')
 django.setup()
+
+from rango.models import Category, Page
 
 def populate():
     python_pages = [
