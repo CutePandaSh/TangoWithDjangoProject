@@ -6,6 +6,9 @@
 {% endblock %}
 
 {% block body_block%}
+    {% if visits %}
+        <p>visits is: {{visits}}</p>
+    {% endif %}
     <div>
         This tutorial has been put together by
         <br />
